@@ -4,9 +4,10 @@ import { HeroSQLService } from '../services/hero-sql-service';
 import { MarvelHerosService } from '../services/marvel-heros.service';
 
 
-@Controller()
+@Controller('hero')
 export class HeroController {
-  constructor(private readonly marvelHeroService: MarvelHerosService,
+  constructor(
+    private readonly marvelHeroService: MarvelHerosService,
     private readonly heroNoSQLService: HeroNoSQLService,
     private readonly heroSQLService: HeroSQLService
     ) {}
