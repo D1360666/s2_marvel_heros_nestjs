@@ -1,19 +1,26 @@
-import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
-
-@Entity('Hero')
+import {Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable} from 'typeorm';
+import { Comic } from './comic.entity';
+@Entity()
 export class Hero{
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @Column()
-    idCharacter:string;
+    idHero:string;
 
     @Column()
     name:string;
  
-    @Column() 
+    @Column({nullable:true}) 
     description: string;
 
     @Column()
-    thumbnail:string;
+    path:string;
+
+    @Column()
+    extension:string;
+
+    @ManyToMany(()=>Comic,(comic)=> comic.heros)
+    @JoinTable({name:'hero_comic'})
+    comics: Comic[];
 }

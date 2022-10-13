@@ -1,7 +1,7 @@
 export class HeroDTO{
-    readonly id:string;
-    readonly idCharacter:string;
-    readonly name:string;
-    readonly description: string;
-    readonly thumbnail:string;
+     id:string;
+     idCharacter:string;
+     name:string;
+     description: string;
+     thumbnail:string;
 }

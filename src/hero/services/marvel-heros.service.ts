@@ -1,6 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { map, catchError } from 'rxjs';
+import { defaultThrottleConfig } from 'rxjs/internal/operators/throttle';
+import { HeroDTO } from '../dto/heroDTO';
 
 @Injectable()
 export class MarvelHerosService {
@@ -11,7 +13,33 @@ export class MarvelHerosService {
   
 
   async getAllHeros(){
+    const uri = `https://gateway.marvel.com/v1/public/characters?ts=${process.env.TS}&apikey=${process.env.PUBLIC_KEY}&hash=${process.env.HASH_CODE}`;
+    //EJ CON AXIOS
+    const DtoList=[];
+    return this.httpService
+    .get(uri)
+    .pipe(
+      map((res) => {
       
+        res.data.data.results.forEach(Hero)=>{
+          const newHeroDTO = new HeroDTO();
+          newHeroDTO.idCharacter= hero1.id;
+          newHeroDTO.description = hero1.description;
+          newHeroDTO.name = hero1.name;
+          newHeroDTO.thumbnail = hero1.thumbnail.path + '.' + hero1.thumbnail.extension
+          
+          DtoList.push(newHeroDTO);
+        }
+        return DtoList;
+      }))
+    .pipe(
+      catchError(() => {
+      throw new ForbiddenException('API not available');
+    }),
+    );
+  }
+
+  async saveHeros(){
     const uri = `https://gateway.marvel.com/v1/public/characters?ts=${process.env.TS}&apikey=${process.env.PUBLIC_KEY}&hash=${process.env.HASH_CODE}`;
     //EJ CON AXIOS
     return this.httpService
@@ -22,6 +50,6 @@ export class MarvelHerosService {
       catchError(() => {
       throw new ForbiddenException('API not available');
     }),
-    );
+    ) 
   }
 }

@@ -1,7 +1,9 @@
 export interface IHero{
-    id:string;
-    idCharacter:string;
-    name:string;
+    id: number;
+    name: string;
     description: string;
-    thumbnail:string;
+    thumbnail: {
+        path: string;
+        extension: string;
+    };
 }

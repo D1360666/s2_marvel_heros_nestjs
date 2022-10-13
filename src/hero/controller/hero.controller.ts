@@ -1,10 +1,13 @@
 import { Controller, Get, Post, Put, Delete, Param, ParseIntPipe } from '@nestjs/common';
+import { Body } from '@nestjs/common/decorators';
+import { HeroDTO } from '../dto/heroDTO';
+import { IHero } from '../interface/hero.interface';
 import { HeroNoSQLService } from '../services/hero-nosql-service';
 import { HeroSQLService } from '../services/hero-sql-service';
 import { MarvelHerosService } from '../services/marvel-heros.service';
 
 
-@Controller('hero')
+@Controller('hero/nosql')
 export class HeroController {
   constructor(
     private readonly marvelHeroService: MarvelHerosService,
@@ -26,22 +29,33 @@ export class HeroController {
     return this.marvelHeroService.getAllHeros();
   }
 
-  @Post('nosql/:id')
+  @Post()
+  saveHeroNoSQL(@Body() heroDTO: HeroDTO):Promise<IHero>{
+    return this.heroNoSQLService.save(heroDTO);
+  }
+  /*@Post('nosql/:id')
   saveHeroNoSQL(@Param('id') id:string){
     //const hero  = this.marvelHeroService.getAllHeros(id);
     this.heroNoSQLService.save();
-  }
+  }*/
 
-  @Put('nosql/:idHeroeExistente/:idNewHero')
-  updateHerpNoSQL(
+  /*@Put('nosql/:idHeroeExistente/:idNewHero')
+  updateHeroNoSQL(
     @Param('idHeroeExistente') idHeroeExistente:string,
     @Param('idNuevoHeroe') idNuevoHeroe: string){
-      this.heroNoSQLService.update();
+      this.heroNoSQLService.update(idHeroeExistente, );
+    }*/
+    @Put(':id')
+    updateHeroNoSQL(
+      @Param('id')idHero: string, 
+      @Body()heroDTO: HeroDTO): Promise<IHero>
+    {
+      return this.heroNoSQLService.update(idHero, heroDTO);
     }
 
     @Put('nosql/:id')
     deleteHeroNoSQL(@Param('id')id:string){
-      this.heroNoSQLService.dalete();
+      this.heroNoSQLService.delete(id);
     }
 
   //--> CRUD SQL

@@ -4,6 +4,7 @@ import {ConfigModule, ConfigService} from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HttpModule } from '@nestjs/axios';
+import { HeroSchema } from './hero/database/schemas/hero.schema';
 
 
 
