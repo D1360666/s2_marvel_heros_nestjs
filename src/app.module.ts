@@ -37,7 +37,7 @@ console.log(`${process.cwd()}/env/.env.${process.env.SCOPE}`)
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_DATABSE'),
+        database: configService.get<string>('DB_DATABASE'),
         autoLoadEntities:true,
         synchronize:true,
         logging: process.env.SCOPE === 'production' ? false:true,

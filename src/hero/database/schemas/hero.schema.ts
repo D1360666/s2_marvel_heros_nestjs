@@ -3,11 +3,11 @@ import { Document } from "mongoose";
 
 export type HeroDocument = Hero & Document;
 
-@Schema()
+@Schema({versionKey: false})
 export class Hero{
 
     @Prop()
-    idCharacter: string;
+    heroId: string;
 
     @Prop()
     name: string;
@@ -17,5 +17,6 @@ export class Hero{
 
     @Prop()
     thumbnail: string;
+    // heroId: any;
 }
 export const HeroSchema = SchemaFactory.createForClass(Hero)

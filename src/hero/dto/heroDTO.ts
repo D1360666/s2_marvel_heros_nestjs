@@ -1,6 +1,5 @@
 export class HeroDTO{
-     id:string;
-     idCharacter:string;
+     heroId:string;
      name:string;
      description: string;
      thumbnail:string;

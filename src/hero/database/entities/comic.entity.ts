@@ -1,20 +1,18 @@
-import {Entity, Column, PrimaryGeneratedColumn, ManyToMany} from 'typeorm';
-import { Hero } from './hero.entity';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { HeroEntity } from './hero.entity';
 
-@Entity({name:'comic'})
-export class Comic{
-    @PrimaryGeneratedColumn('uuid')
-    id:string;
 
-    @Column()
-    idComic:number;
+@Entity({ name: 'comic' })
+export class ComicEntity {
+  @PrimaryGeneratedColumn()
+  comicId: number;
+  @Column()
+  title: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  description: string;
+  @Column()
+  format: string;
 
-    @Column()
-    name:string
-
-    @Column()
-    issueNumber:number;
-
-    @ManyToMany(() => Hero, (hero)=> hero.comics)
-    heros: Hero[];
+  @ManyToMany((type) => HeroEntity, (character) => character.comics)
+  characters: HeroEntity[];
 }

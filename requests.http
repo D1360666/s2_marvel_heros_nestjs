@@ -1,1 +1,14 @@
 GET https://gateway.marvel.com/v1/public/characters?ts=9&apikey=018e11be788423f319352372c864bef3&hash=99bbbae20064f797bc61f67564cd7b26 HTTP/1.1
+###
+GET http://localhost:3000/hero HTTP/1.1
+
+###
+POST  http://localhost:3000/hero/nosql/1009144 HTTP/1.1
+###
+POST  http://localhost:3000/hero/nosql/1017100 HTTP/1.1
+###
+POST  http://localhost:3000/hero/nosql/1010699 HTTP/1.1
+
+###
+POST  http://localhost:3000/hero/nosql/1009146 HTTP/1.1
+

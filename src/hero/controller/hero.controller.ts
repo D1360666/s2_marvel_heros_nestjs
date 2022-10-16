@@ -5,66 +5,36 @@ import { IHero } from '../interface/hero.interface';
 import { HeroNoSQLService } from '../services/hero-nosql-service';
 import { HeroSQLService } from '../services/hero-sql-service';
 import { MarvelHerosService } from '../services/marvel-heros.service';
+import { Utils } from '../tools/utils';
 
 
-@Controller('hero/nosql')
+@Controller('hero')
 export class HeroController {
   constructor(
+    private readonly utils: Utils,
     private readonly marvelHeroService: MarvelHerosService,
     private readonly heroNoSQLService: HeroNoSQLService,
     private readonly heroSQLService: HeroSQLService
     ) {}
 
 
-    //--> CRUD NO SQL
-  /*@Get(':count/:page')
-  findAll(@Param('count', ParseIntPipe) count: number,
-          @Param('page', ParseIntPipe) page:number
-  ):Array<object>{
-    return this.marvelHeroService.getAllHeros(count, page);
-  }*/
-
+  //CRUD NO SQL
   @Get()
-  findAll(){
-    return this.marvelHeroService.getAllHeros();
+  async findAll(){
+    return await this.marvelHeroService.getAllHeros();
   }
+  //Post para guardar un Hero en Mongo
+ @Post('nosql/:id')
+ async saveHeroNoSQL(@Param('id')id:number){
+  /*const hero = await this.marvelHeroService.getHeroByID(id);
+  return this.heroNoSQLService.save(hero);*/
+  const heroDto = await this.marvelHeroService.getHeroByID(id);
+  console.log("Controller Hero Dto: " + heroDto);
+  const heroSch = this.utils.heroDtoToHeroSchema(heroDto);
+  console.log("Controller: " + heroSch);
+  return this.heroNoSQLService.save(heroSch);
+ }
 
-  @Post()
-  saveHeroNoSQL(@Body() heroDTO: HeroDTO):Promise<IHero>{
-    return this.heroNoSQLService.save(heroDTO);
-  }
-  /*@Post('nosql/:id')
-  saveHeroNoSQL(@Param('id') id:string){
-    //const hero  = this.marvelHeroService.getAllHeros(id);
-    this.heroNoSQLService.save();
-  }*/
-
-  /*@Put('nosql/:idHeroeExistente/:idNewHero')
-  updateHeroNoSQL(
-    @Param('idHeroeExistente') idHeroeExistente:string,
-    @Param('idNuevoHeroe') idNuevoHeroe: string){
-      this.heroNoSQLService.update(idHeroeExistente, );
-    }*/
-    @Put(':id')
-    updateHeroNoSQL(
-      @Param('id')idHero: string, 
-      @Body()heroDTO: HeroDTO): Promise<IHero>
-    {
-      return this.heroNoSQLService.update(idHero, heroDTO);
-    }
-
-    @Put('nosql/:id')
-    deleteHeroNoSQL(@Param('id')id:string){
-      this.heroNoSQLService.delete(id);
-    }
-
-  //--> CRUD SQL
-  @Post('sql/:id')
-  saveHeroSQL(@Param('id') id:string){
-    //const hero  = this.marvelHeroService.getAllHeros(id);
-    this.heroSQLService.save();
-  }
-
-  
+ 
 
 }
