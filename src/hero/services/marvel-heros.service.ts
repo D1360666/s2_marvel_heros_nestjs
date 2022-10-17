@@ -1,14 +1,23 @@
 import { HttpService } from '@nestjs/axios';
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { map, catchError, lastValueFrom, firstValueFrom, pipe } from 'rxjs';
 import { defaultThrottleConfig } from 'rxjs/internal/operators/throttle';
+import { Comic, ComicDocument } from '../database/schemas/comic.schema';
+import { Hero, HeroDocument } from '../database/schemas/hero.schema';
+import ComicDTO from '../dto/comicDTO';
 import { HeroDTO } from '../dto/heroDTO';
 import { Utils } from '../tools/utils';
 
 @Injectable()
 export class MarvelHerosService {
   constructor(
+    @InjectModel(Comic.name)
+    private comicModel: Model<ComicDocument>,
+    @InjectModel(Hero.name)
+    private heroModel: Model<HeroDocument>,
     private readonly httpService: HttpService,
     private readonly utils: Utils
 ){}
@@ -56,8 +65,21 @@ export class MarvelHerosService {
         })
       )
     )
-
   }
 
-  
+
+getComicsByHeroId(id:string): Promise<ComicDTO[]>{
+  const uri = `https://gateway.marvel.com/v1/public/characters/${id}/comics?ts=${process.env.TS}&apikey=${process.env.PUBLIC_KEY}&hash=${process.env.HASH_CODE}`;
+
+  return lastValueFrom(
+    this.httpService.get(uri).pipe(
+      map((res) =>{
+        return res.data.data.results.map((comic)=> {
+          return this.utils.comicToComicDto(comic);
+        })
+      })
+    )
+  )
+}
+
 }

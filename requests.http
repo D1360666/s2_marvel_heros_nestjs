@@ -12,3 +12,13 @@ POST  http://localhost:3000/hero/nosql/1010699 HTTP/1.1
 ###
 POST  http://localhost:3000/hero/nosql/1009146 HTTP/1.1
 
+###
+DELETE http://localhost:3000/hero/nosql/1009146 HTTP/1.1
+###
+GET http://localhost:3000/hero/comics/1009146 HTTP/1.1
+
+###
+POST http://localhost:3000/hero/sql/1010699 HTTP/1.1
+
+###
+POST http://localhost:3000/hero/sql/1009146 HTTP/1.1
